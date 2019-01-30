@@ -1,1 +1,20 @@
 @import 'variables';
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 0 3px rgba(0,0,0, .15);
+  &_title {
+    font-size: 24px;
+    color: $main;
+  };
+  &_text {
+    font-size: 16px;
+    color: #2b2b2b
+  };
+}
