@@ -13,17 +13,19 @@ export const ColorPicker = ({
 }) => (
   <ul className="color-picker">
     {
-    colors && colors.map(color => (
-      <li key={color}>
-        <button
-          className={color === value ? 'color-picker-item active' : 'color-picker-item'}
-          style={{
-            backgroundColor: color
-          }}
-          onClick={() => { onSwitch(color); }}
-        />
-      </li>
-    ))
-  }
+      colors && colors.map(color => (
+        <li key={color}>
+          <button
+            className={color === value
+              ? 'color-picker-item active'
+              : 'color-picker-item'}
+            style={{
+              backgroundColor: color
+            }}
+            onClick={() => { onSwitch(color); }}
+          />
+        </li>
+      ))
+    }
   </ul>
 );

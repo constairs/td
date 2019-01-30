@@ -8,7 +8,8 @@ import {
 } from 'react-beautiful-dnd';
 import {
   CardItem,
-  Modal
+  Modal,
+  CreateForm
 } from '../../components';
 
 export class HomeScreen extends React.Component<Object, Object> {
@@ -35,14 +36,16 @@ export class HomeScreen extends React.Component<Object, Object> {
         text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!'
       }
     ],
-    editModal: false
+    editModal: false,
+    createModal: false
   }
 
   render() {
     const {
       state: {
         cardList,
-        editModal
+        editModal,
+        createModal
       }
     } = this;
     return (
@@ -57,7 +60,8 @@ export class HomeScreen extends React.Component<Object, Object> {
                     cardList.map(({
                       id,
                       title,
-                      text
+                      text,
+                      color
                     }, index) => (
                       <Draggable index={index} key={id} draggableId={id}>
                         {dragProvider => (
@@ -66,6 +70,7 @@ export class HomeScreen extends React.Component<Object, Object> {
                               id={id}
                               title={title}
                               text={text}
+                              color={color}
                               onDeleteItem={() => {
                                   this.setState(({ cardList: list }) => ({
                                     cardList: list.filter(card => card.id !== id)
@@ -90,6 +95,23 @@ export class HomeScreen extends React.Component<Object, Object> {
           onCloseModal={() => {
             this.setState({
               editModal: false
+            });
+          }}
+        >
+          <CreateForm
+            onCreate={(createdCard) => {
+              this.setState(({ cardList: list }) => ({
+                list: [...list, { ...createdCard, id: cardList.length + 1 }]
+              }));
+            }}
+          />
+        </Modal>
+
+        <Modal
+          opened={createModal}
+          onCloseModal={() => {
+            this.setState({
+              createModal: false
             });
           }}
         >

@@ -2,17 +2,24 @@
 
 import React from 'react';
 
+import Select from 'react-select';
 import { ColorPicker } from '../index';
 
 type Props = {
-
+  onCreate: (
+    formdata: {
+      title: string,
+      text: string,
+      color: string
+  }) => any
 };
 
 export class CreateForm extends React.Component<Props, Object> {
   state={
     title: '',
     text: '',
-    color: '#ffffff'
+    color: '#ffffff',
+    importancy: 'default'
   }
 
   render() {
@@ -20,12 +27,23 @@ export class CreateForm extends React.Component<Props, Object> {
       state: {
         title,
         text,
-        color
+        color,
+        importancy
+      },
+      props: {
+        onCreate
       }
     } = this;
 
     return (
-      <form onSubmit={() => {}}>
+      <form onSubmit={() => {
+        onCreate({
+          title,
+          text,
+          color
+        });
+      }}
+      >
         <label htmlFor="titleInput">
           <span>Title</span>
           <input
@@ -53,9 +71,24 @@ export class CreateForm extends React.Component<Props, Object> {
           value={color}
           colors={['#cc0000', '#f0f0f0', '#2b2b2b']}
           onSwitch={(switchedColor) => {
-          this.setState({ color: switchedColor });
+            this.setState({ color: switchedColor });
           }}
         />
+
+        <label htmlFor="importancy">
+          <Select
+            name="importancy"
+            id="importancy"
+            options={[]}
+            value={importancy}
+            onChange={
+              ({ target: { value } }) => {
+                this.setState({
+                  importancy: value
+                });
+              }}
+          />
+        </label>
 
         <button type="submit">
           Add

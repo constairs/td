@@ -10,6 +10,7 @@ import { DropdownMenu } from '../index';
 type Props = {
   title?: string,
   text?: string,
+  color?: string,
   onDeleteItem: () => any,
   onEditItem: () => any
 };
@@ -21,7 +22,8 @@ type State = {
 export class CardItem extends React.Component<Props, State> {
   static defaultProps = {
     title: '',
-    text: ''
+    text: '',
+    color: '#ffffff'
   };
 
   state = {
@@ -33,6 +35,7 @@ export class CardItem extends React.Component<Props, State> {
       props: {
         title,
         text,
+        color,
         onDeleteItem,
         onEditItem
       },
@@ -41,7 +44,7 @@ export class CardItem extends React.Component<Props, State> {
       }
     } = this;
     return (
-      <div className="card">
+      <div className="card" style={{ backgroundColor: color }}>
         <button onClick={() => { this.setState({ optionsDropdown: true }); }}>
           <FontAwesome icon={faDotCircle} />
         </button>
