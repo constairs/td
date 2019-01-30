@@ -1,4 +1,9 @@
 import React from 'react';
+import {
+  DragAndDropContext,
+  Draggable,
+  Droppable
+} from 'react-beautiful-dnd';
 import { CardItem } from '../../components';
 
 export class HomeScreen extends React.Component {
@@ -37,26 +42,41 @@ export class HomeScreen extends React.Component {
       <React.Fragment>
         <h1>Home</h1>
         <div className="grid">
-          {
-            cardList.map(({
-              id,
-              title,
-              text
-            }) => (
-              <CardItem
-                key={id}
-                id={id}
-                title={title}
-                text={text}
-                onDeleteItem={() => {
-                  this.setState(({ cardList: list }) => ({
-                    cardList: list.filter(card => card.id !== id)
-                  }));
-                }}
-                onEditItem={() => {}}
-              />
-            ))
-          }
+          <DragAndDropContext>
+            <Droppable droppableId="cards">
+              {(provider, snapshot) => (
+                <div>
+                  {
+                    cardList.map(({
+                      id,
+                      title,
+                      text
+                    }, index) => (
+                      <Draggable index={index} key={id} draggableId={id}>
+                        {(dragProvider, dragSnapshot) => (
+                          <div>
+                            <CardItem
+                              id={id}
+                              title={title}
+                              text={text}
+                              onDeleteItem={() => {
+                                  this.setState(({ cardList: list }) => ({
+                                    cardList: list.filter(card => card.id !== id)
+                                  }));
+                                }}
+                              onEditItem={() => {}}
+                            />
+                            { dragProvider }
+                          </div>
+                        )}
+                      </Draggable>
+                    ))
+                  }
+                  { provider }
+                </div>
+              )}
+            </Droppable>
+          </DragAndDropContext>
         </div>
       </React.Fragment>
     );

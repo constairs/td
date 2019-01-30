@@ -15,5 +15,5 @@ export const DropdownMenu = ({ opened, children: Component }) => (
 
 DropdownMenu.propTypes = {
   children: PropTypes.ObjectOf(PropTypes.string).isRequired,
-  opened: PropTypes.bool.isRequired,
+  opened: PropTypes.bool.isRequired
 };
