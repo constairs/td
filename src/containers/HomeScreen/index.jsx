@@ -1,12 +1,17 @@
+// @flow
+
 import React from 'react';
 import {
   DragAndDropContext,
   Draggable,
   Droppable
 } from 'react-beautiful-dnd';
-import { CardItem } from '../../components';
+import {
+  CardItem,
+  Modal
+} from '../../components';
 
-export class HomeScreen extends React.Component {
+export class HomeScreen extends React.Component<Object, Object> {
   state = {
     cardList: [
       {
@@ -29,13 +34,15 @@ export class HomeScreen extends React.Component {
         title: 'Card4',
         text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!'
       }
-    ]
+    ],
+    editModal: false
   }
 
   render() {
     const {
       state: {
-        cardList
+        cardList,
+        editModal
       }
     } = this;
     return (
@@ -44,7 +51,7 @@ export class HomeScreen extends React.Component {
         <div className="grid">
           <DragAndDropContext>
             <Droppable droppableId="cards">
-              {(provider, snapshot) => (
+              {provider => (
                 <div>
                   {
                     cardList.map(({
@@ -53,7 +60,7 @@ export class HomeScreen extends React.Component {
                       text
                     }, index) => (
                       <Draggable index={index} key={id} draggableId={id}>
-                        {(dragProvider, dragSnapshot) => (
+                        {dragProvider => (
                           <div>
                             <CardItem
                               id={id}
@@ -78,6 +85,18 @@ export class HomeScreen extends React.Component {
             </Droppable>
           </DragAndDropContext>
         </div>
+        <Modal
+          opened={editModal}
+          onCloseModal={() => {
+            this.setState({
+              editModal: false
+            });
+          }}
+        >
+          <div>
+            <h1>modal</h1>
+          </div>
+        </Modal>
       </React.Fragment>
     );
   }

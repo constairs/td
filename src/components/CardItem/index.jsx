@@ -1,12 +1,29 @@
+// @flow
+
 import React from 'react';
-import { PropTypes } from 'prop-types';
 
 import { FontAwesome } from '@fortawesome/react-fontawesome';
 import { faDotCircle, faTrash, faPen } from '@fortawesome/free-solid-svg-icons';
 
 import { DropdownMenu } from '../index';
 
-export class CardItem extends React.Component {
+type Props = {
+  title?: string,
+  text?: string,
+  onDeleteItem: () => any,
+  onEditItem: () => any
+};
+
+type State = {
+  optionsDropdown: boolean
+};
+
+export class CardItem extends React.Component<Props, State> {
+  static defaultProps = {
+    title: '',
+    text: ''
+  };
+
   state = {
     optionsDropdown: false
   };
@@ -50,15 +67,3 @@ export class CardItem extends React.Component {
     );
   }
 }
-
-CardItem.defaultProps = {
-  title: '',
-  text: ''
-};
-
-CardItem.propTypes = {
-  title: PropTypes.string,
-  text: PropTypes.string,
-  onDeleteItem: PropTypes.func.isRequired,
-  onEditItem: PropTypes.func.isRequired
-};

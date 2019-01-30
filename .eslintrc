@@ -7,6 +7,10 @@
     "browser": true
   },
 
+  "plugins": [
+    "flowtype"
+  ],
+
   "rules": {
     "comma-dangle": "off",
     "import/no-default-export": "error",
