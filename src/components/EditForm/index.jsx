@@ -1,20 +1,18 @@
-// @flow
-
 import React from 'react';
 
 import Select from 'react-select';
 import { ColorPicker } from '../index';
 
 type Props = {
-  onCreate: (
-    formdata: {
-      title: string,
-      text: string,
-      color: string
+  onEdit: (formdata: {
+    title: string,
+    text: string,
+    color: string,
+    importancy: string
   }) => any
 };
 
-export class CreateForm extends React.Component<Props, Object> {
+export class EditForm extends React.Component<Props, Object> {
   state={
     title: '',
     text: '',
@@ -31,19 +29,20 @@ export class CreateForm extends React.Component<Props, Object> {
         importancy
       },
       props: {
-        onCreate
+        onEdit
       }
     } = this;
-
     return (
       <form onSubmit={() => {
-        onCreate({
+        onEdit({
           title,
           text,
-          color
+          color,
+          importancy
         });
       }}
       >
+
         <label htmlFor="titleInput">
           <span>Title</span>
           <input

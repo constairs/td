@@ -2,14 +2,15 @@
 
 import React from 'react';
 import {
-  DragAndDropContext,
+  DragDropContext,
   Draggable,
   Droppable
 } from 'react-beautiful-dnd';
 import {
   CardItem,
   Modal,
-  CreateForm
+  CreateForm,
+  EditForm
 } from '../../components';
 
 export class HomeScreen extends React.Component<Object, Object> {
@@ -18,26 +19,34 @@ export class HomeScreen extends React.Component<Object, Object> {
       {
         id: '1',
         title: 'Card1',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!'
+        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
+        color: '#ffffff'
       },
       {
         id: '2',
         title: 'Card2',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!'
+        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
+        color: '#ffffff'
       },
       {
         id: '3',
         title: 'Card3',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!'
+        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
+        color: '#ffffff'
       },
       {
         id: '4',
         title: 'Card4',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!'
+        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
+        color: '#ffffff'
       }
     ],
     editModal: false,
     createModal: false
+  }
+
+  onDragEnd = () => {
+
   }
 
   render() {
@@ -46,50 +55,52 @@ export class HomeScreen extends React.Component<Object, Object> {
         cardList,
         editModal,
         createModal
-      }
+      },
+      onDragEnd
     } = this;
     return (
       <React.Fragment>
         <h1>Home</h1>
         <div className="grid">
-          <DragAndDropContext>
+          <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="cards">
-              {provider => (
-                <div>
-                  {
-                    cardList.map(({
-                      id,
-                      title,
-                      text,
-                      color
-                    }, index) => (
-                      <Draggable index={index} key={id} draggableId={id}>
-                        {dragProvider => (
-                          <div>
-                            <CardItem
-                              id={id}
-                              title={title}
-                              text={text}
-                              color={color}
-                              onDeleteItem={() => {
-                                  this.setState(({ cardList: list }) => ({
-                                    cardList: list.filter(card => card.id !== id)
-                                  }));
+              {(
+                provided => (
+                  <div ref={provided.innerRef}>
+                    {
+                      cardList.map(({
+                        id,
+                        title,
+                        text,
+                        color
+                      }, index) => (
+                        <Draggable index={index} key={id} draggableId={id}>
+                          {dragProvider => (
+                            <div ref={dragProvider.innerRef}>
+                              <CardItem
+                                id={id}
+                                title={title}
+                                text={text}
+                                color={color}
+                                onDeleteItem={() => {
+                                    this.setState(({ cardList: list }) => ({
+                                      cardList: list.filter(card => card.id !== id)
+                                    }));
                                 }}
-                              onEditItem={() => {}}
-                            />
-                            { dragProvider }
-                          </div>
-                        )}
-                      </Draggable>
-                    ))
-                  }
-                  { provider }
-                </div>
+                                onEditItem={() => {}}
+                              />
+                            </div>
+                          )}
+                        </Draggable>
+                      ))
+                    }
+                  </div>
+                )
               )}
             </Droppable>
-          </DragAndDropContext>
+          </DragDropContext>
         </div>
+
         <Modal
           opened={editModal}
           onCloseModal={() => {
@@ -115,9 +126,13 @@ export class HomeScreen extends React.Component<Object, Object> {
             });
           }}
         >
-          <div>
-            <h1>modal</h1>
-          </div>
+          <EditForm
+            onEdit={(editedCard) => {
+              this.setState(({ cardList: list }) => ({
+                list: [...list, { ...editedCard, id: cardList.length + 1 }]
+              }));
+            }}
+          />
         </Modal>
       </React.Fragment>
     );

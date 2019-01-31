@@ -7,11 +7,11 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 export const Modal = ({
   opened,
   onCloseModal,
-  children: Component
+  children
 } : {
   opened: boolean,
   onCloseModal: () => any,
-  children: Node
+  children: Object
 }) => (
   <React.Fragment>
     {
@@ -20,7 +20,7 @@ export const Modal = ({
           <button className="x-btn" onCLick={onCloseModal}>
             <FontAwesome icon={faTimes} />
           </button>
-          <div className="modal">{ Component }</div>
+          <div className="modal">{ children }</div>
         </div>
       )
     }
