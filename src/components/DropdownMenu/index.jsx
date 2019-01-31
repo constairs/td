@@ -1,19 +1,21 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
+// @flow
 
-export const DropdownMenu = ({ opened, children: Component }) => (
+import React from 'react';
+
+export const DropdownMenu = ({
+  opened,
+  children
+} : {
+  opened: boolean,
+  children: Object
+}) => (
   <React.Fragment>
     {
       opened && (
         <div>
-          { Component }
+          { children }
         </div>
       )
     }
   </React.Fragment>
 );
-
-DropdownMenu.propTypes = {
-  children: PropTypes.ObjectOf(PropTypes.string).isRequired,
-  opened: PropTypes.bool.isRequired
-};

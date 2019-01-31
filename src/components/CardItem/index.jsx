@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { FontAwesome } from '@fortawesome/react-fontawesome';
-import { faDotCircle, faTrash, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faDotCircle, faTrash, faPen, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { DropdownMenu } from '../index';
 
@@ -11,8 +11,11 @@ type Props = {
   title?: string,
   text?: string,
   color?: string,
+  disabled?: boolean,
   onDeleteItem: () => any,
-  onEditItem: () => any
+  onEditItem: () => any,
+  disableItem: () => any,
+  enableItem: () => any
 };
 
 type State = {
@@ -23,7 +26,8 @@ export class CardItem extends React.Component<Props, State> {
   static defaultProps = {
     title: '',
     text: '',
-    color: '#ffffff'
+    color: '#ffffff',
+    disabled: false
   };
 
   state = {
@@ -36,8 +40,11 @@ export class CardItem extends React.Component<Props, State> {
         title,
         text,
         color,
+        disabled,
         onDeleteItem,
-        onEditItem
+        onEditItem,
+        disableItem,
+        enableItem
       },
       state: {
         optionsDropdown
@@ -53,6 +60,9 @@ export class CardItem extends React.Component<Props, State> {
           <React.Fragment>
             <button onClick={onEditItem}>
               <FontAwesome icon={faPen} /> Edit
+            </button>
+            <button onClick={disabled ? enableItem : disableItem}>
+              <FontAwesome icon={disabled ? faCheck : faTimes} /> {disabled ? 'Enable' : 'Disable'}
             </button>
             <button onClick={onDeleteItem}>
               <FontAwesome icon={faTrash} /> Delete

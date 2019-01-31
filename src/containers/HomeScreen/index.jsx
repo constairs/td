@@ -20,25 +20,29 @@ export class HomeScreen extends React.Component<Object, Object> {
         id: '1',
         title: 'Card1',
         text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
-        color: '#ffffff'
+        color: '#ffffff',
+        disabled: false
       },
       {
         id: '2',
         title: 'Card2',
         text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
-        color: '#ffffff'
+        color: '#ffffff',
+        disabled: false
       },
       {
         id: '3',
         title: 'Card3',
         text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
-        color: '#ffffff'
+        color: '#ffffff',
+        disabled: false
       },
       {
         id: '4',
         title: 'Card4',
         text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
-        color: '#ffffff'
+        color: '#ffffff',
+        disabled: false
       }
     ],
     editModal: false,
@@ -49,6 +53,10 @@ export class HomeScreen extends React.Component<Object, Object> {
 
   }
 
+  onCreateItem = () => {
+
+  }
+
   render() {
     const {
       state: {
@@ -56,12 +64,16 @@ export class HomeScreen extends React.Component<Object, Object> {
         editModal,
         createModal
       },
-      onDragEnd
+      onDragEnd,
+      onCreateItem
     } = this;
     return (
       <React.Fragment>
         <h1>Home</h1>
         <div className="grid">
+          <button onClick={onCreateItem}>
+            + Add Item
+          </button>
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="cards">
               {(
@@ -72,7 +84,8 @@ export class HomeScreen extends React.Component<Object, Object> {
                         id,
                         title,
                         text,
-                        color
+                        color,
+                        disabled
                       }, index) => (
                         <Draggable index={index} key={id} draggableId={id}>
                           {dragProvider => (
@@ -82,6 +95,7 @@ export class HomeScreen extends React.Component<Object, Object> {
                                 title={title}
                                 text={text}
                                 color={color}
+                                disabled={disabled}
                                 onDeleteItem={() => {
                                     this.setState(({ cardList: list }) => ({
                                       cardList: list.filter(card => card.id !== id)

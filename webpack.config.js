@@ -226,7 +226,7 @@ module.exports = (releaseStage) => {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       inject: 'head',
-      title: 'React Starter Template',
+      title: 'app',
       template: './src/index.html',
       releaseStage
     }),
