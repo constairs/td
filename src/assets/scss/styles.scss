@@ -21,8 +21,37 @@
   };
 }
 
-.x-btn {
-  position: absolute;
-  right: 10px;
-  top: 10px;
+.btn {
+  border: none;
+  border-bottom: 3px solid $accent700;
+  background-color: $accent400;
+  border-radius: 4px;
+  &:hover {
+    background-color: $accent300;
+  };
+  &:focus {
+    background-color: $accent700;
+  };
+  &:active {
+    background-attachment: $accent700;
+  };
+  &-xs {
+    width: 20px;
+    height: 20px;
+    border-radius: 0;
+    background-color: none;
+    border-bottom: none;
+  };
+  &-sm {
+    width: 60px;
+    height: 30px;
+  };
+  &-md {
+    width: 160px;
+    height: 40px;
+  }
+  &-lg {
+    width: 200px;
+    height: 45px;
+  }
 }

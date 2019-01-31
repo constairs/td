@@ -12,8 +12,10 @@ export const DropdownMenu = ({
   <React.Fragment>
     {
       opened && (
-        <div>
-          { children }
+        <div className="dropdown-overlay">
+          <div className="dropdown-content">
+            { children }
+          </div>
         </div>
       )
     }

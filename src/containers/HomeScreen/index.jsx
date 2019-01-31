@@ -1,6 +1,8 @@
 // @flow
 
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import {
   DragDropContext,
   Draggable,
@@ -13,13 +15,17 @@ import {
   EditForm
 } from '../../components';
 
-export class HomeScreen extends React.Component<Object, Object> {
+import { createCardRequest } from '../../redux/cards/actions';
+
+
+export class Home extends React.Component<Object, Object> {
   state = {
     cardList: [
       {
         id: '1',
         title: 'Card1',
         text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
+        importancy: 'default',
         color: '#ffffff',
         disabled: false
       },
@@ -27,6 +33,7 @@ export class HomeScreen extends React.Component<Object, Object> {
         id: '2',
         title: 'Card2',
         text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
+        importancy: 'default',
         color: '#ffffff',
         disabled: false
       },
@@ -34,6 +41,7 @@ export class HomeScreen extends React.Component<Object, Object> {
         id: '3',
         title: 'Card3',
         text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
+        importancy: 'default',
         color: '#ffffff',
         disabled: false
       },
@@ -41,20 +49,59 @@ export class HomeScreen extends React.Component<Object, Object> {
         id: '4',
         title: 'Card4',
         text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
+        importancy: 'default',
         color: '#ffffff',
         disabled: false
       }
     ],
+    filter: 'default',
     editModal: false,
     createModal: false
   }
 
-  onDragEnd = () => {
+  onDragEnd = ({
+    source,
+    destination,
+  }: Object) => {
+    if (!destination) return;
+    type DroppableId = 'cards';
+    const sourceId: DroppableId = source.droppableId;
+    const destinationId: DroppableId = destination.droppableId;
 
-  }
+    const {
+      cardList = []
+    } = this.state;
 
-  onCreateItem = () => {
+    const sourceAnswers = sourceId === 'cards' ? cardList : [];
+    const destinationAnswers = destinationId !== 'cards' ? [] : cardList;
 
+    const destinationAnswersMaxCount: number = ({
+      cards: 1000,
+    }[destinationId] || 1000);
+
+    const sourceAnswersUpdated = [...sourceAnswers];
+    // use same list if sourceId === destinationId
+    const destinationAnswersUpdated = sourceId === destinationId
+      ? sourceAnswersUpdated
+      : [...destinationAnswers];
+
+    const [removed] = sourceAnswersUpdated.splice(source.index, 1);
+    // swap items if destination list is filled
+    if (destinationAnswers.length === destinationAnswersMaxCount && sourceId !== destinationId) {
+      const [removedDest] = destinationAnswersUpdated.splice(destination.index, 1);
+      sourceAnswersUpdated.splice(source.index, 0, removedDest);
+    }
+    destinationAnswersUpdated.splice(destination.index, 0, removed);
+
+    this.setState({
+      [sourceId]: sourceAnswersUpdated,
+      [destinationId]: destinationAnswersUpdated,
+    });
+  };
+
+  get FilteredCards() {
+    const { state: { cardList, filter: filterParam } } = this;
+    return cardList.filter(item => (item.importancy === filterParam));
   }
 
   render() {
@@ -62,16 +109,26 @@ export class HomeScreen extends React.Component<Object, Object> {
       state: {
         cardList,
         editModal,
-        createModal
+        createModal,
+        filter
       },
-      onDragEnd,
-      onCreateItem
+      FilteredCards,
+      onDragEnd
     } = this;
     return (
       <React.Fragment>
         <h1>Home</h1>
         <div className="grid">
-          <button onClick={onCreateItem}>
+          <button onClick={() => {
+            this.setState({ createModal: true });
+          }}
+          >
+            <div>
+              <button onClick={() => { this.setState({ filter: '' }); }}>All</button>
+              <button onClick={() => { this.setState({ filter: 'default' }); }}>Default</button>
+              <button onClick={() => { this.setState({ filter: 'important' }); }}>Important</button>
+              <button onClick={() => { this.setState({ filter: 'veryImportant' }); }}>Very Important</button>
+            </div>
             + Add Item
           </button>
           <DragDropContext onDragEnd={onDragEnd}>
@@ -79,8 +136,7 @@ export class HomeScreen extends React.Component<Object, Object> {
               {(
                 provided => (
                   <div ref={provided.innerRef}>
-                    {
-                      cardList.map(({
+                    {(filter ? cardList : FilteredCards).map(({
                         id,
                         title,
                         text,
@@ -88,26 +144,36 @@ export class HomeScreen extends React.Component<Object, Object> {
                         disabled
                       }, index) => (
                         <Draggable index={index} key={id} draggableId={id}>
-                          {dragProvider => (
-                            <div ref={dragProvider.innerRef}>
+                          {({ innerRef }, { isDragging }) => (
+                            <div ref={innerRef}>
                               <CardItem
                                 id={id}
                                 title={title}
                                 text={text}
                                 color={color}
                                 disabled={disabled}
+                                style={{
+                                  border: isDragging
+                                  ? '2px solid #cc0000'
+                                  : '1px solid #2b2b2b'
+                                }}
                                 onDeleteItem={() => {
                                     this.setState(({ cardList: list }) => ({
                                       cardList: list.filter(card => card.id !== id)
                                     }));
                                 }}
-                                onEditItem={() => {}}
+                                onEditItem={() => {
+                                  this.setState({
+                                    editModal: true
+                                  });
+                                }}
                               />
                             </div>
                           )}
                         </Draggable>
                       ))
                     }
+                    {provided.placeholder}
                   </div>
                 )
               )}
@@ -152,3 +218,12 @@ export class HomeScreen extends React.Component<Object, Object> {
     );
   }
 }
+
+export const HomeScreen = connect(
+  state => ({
+    cardList: state.cardList
+  }),
+  dispatch => ({
+    cardActions: bindActionCreators({ createCardRequest }, dispatch)
+  })
+)(Home);

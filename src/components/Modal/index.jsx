@@ -16,14 +16,17 @@ export const Modal = ({
   <React.Fragment>
     {
       opened && (
-        <div className="modal-wrapper">
-          <button className="x-btn" onCLick={onCloseModal}>
-            <FontAwesome icon={faTimes} />
-          </button>
-          <div className="modal">{ children }</div>
+        <div className="modal-overlay" onCLick={onCloseModal}>
+          <div className="modal">
+            <button className="x-btn" onCLick={onCloseModal}>
+              <FontAwesome icon={faTimes} />
+            </button>
+            <div className="modal-content">
+              { children }
+            </div>
+          </div>
         </div>
       )
     }
   </React.Fragment>
 );
-
