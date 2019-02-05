@@ -10,7 +10,7 @@ import './assets/scss/styles.scss';
 
 const store = configureStore();
 
-store.runSaga();
+// store.runSaga();
 
 export const Application = hot(module)(() => (
   <Provider store={store} >

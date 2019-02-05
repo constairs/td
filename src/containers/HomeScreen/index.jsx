@@ -100,7 +100,12 @@ export class Home extends React.Component<Object, Object> {
   };
 
   get FilteredCards() {
-    const { state: { cardList, filter: filterParam } } = this;
+    const {
+      state: {
+        cardList,
+        filter: filterParam
+      }
+    } = this;
     return cardList.filter(item => (item.importancy === filterParam));
   }
 
