@@ -1,15 +1,22 @@
-// import * as TYPES from './types';
+import * as TYPES from './types';
 
-// import {
-//   CREATE_CARD_REQUEST,
-//   CREATE_CARD_SUCCESS,
-//   CREATE_CARD_FAIL
-// } from './types';
+const initialState = {
+  fetching: false,
+  error: null
+};
 
-// {
-//   'CREATE_CARD_REQUEST': createCardReducer() {
+export const cardsReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case TYPES.CREATE_CARD_REQUEST:
+      return { ...state, fetching: true };
 
-//   }
-// }[TYPES]
+    case TYPES.CREATE_CARD_SUCCESS:
+      return { ...state, fetching: false };
 
-export const cardsReducer = {};
+    case TYPES.CREATE_CARD_FAIL:
+      return { ...state, fetching: false, error: action.error };
+
+    default:
+      return state;
+  }
+};

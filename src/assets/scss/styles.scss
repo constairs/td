@@ -1,24 +1,27 @@
-@import 'variables';
-@import '../../components/Modal/index.scss';
-@import '../../components/ColorPicker/index.scss';
+@import "variables";
+@import "../../components/Modal/index.scss";
+@import "../../components/ColorPicker/index.scss";
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 25% 25% 25% 25%;
+  max-width: 1200px;
+  margin: 0 auto;
+  grid-gap: 30px;
 }
 
 .card {
   background-color: #ffffff;
   border-radius: 4px;
-  box-shadow: 0 0 3px rgba(0,0,0, .15);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
   &_title {
     font-size: 24px;
     color: $main;
-  };
+  }
   &_text {
     font-size: 16px;
-    color: #2b2b2b
-  };
+    color: #2b2b2b;
+  }
 }
 
 .btn {
@@ -28,24 +31,24 @@
   border-radius: 4px;
   &:hover {
     background-color: $accent300;
-  };
+  }
   &:focus {
     background-color: $accent700;
-  };
+  }
   &:active {
     background-attachment: $accent700;
-  };
+  }
   &-xs {
     width: 20px;
     height: 20px;
     border-radius: 0;
     background-color: none;
     border-bottom: none;
-  };
+  }
   &-sm {
     width: 60px;
     height: 30px;
-  };
+  }
   &-md {
     width: 160px;
     height: 40px;

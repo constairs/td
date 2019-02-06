@@ -15,13 +15,13 @@ export const configureStore = () => {
   );
 
   if (module.hot) {
-    module.hot.accept('./reducers.js', () => {
+    module.hot.accept("./reducers.js", () => {
       // eslint-disable-next-line
-      const nextRootReducer = require('./reducers.js');
+      const nextRootReducer = require("./reducers.js");
       store.replaceReducer(nextRootReducer);
     });
   }
   store.runSaga = sagaMiddleware.run;
 
   return store;
-}
+};
