@@ -1,9 +1,9 @@
-import { createStore, applyMiddleware } from 'redux';
-import createSagaMiddleware from 'redux-saga';
+import { createStore, /* applyMiddleware */ } from 'redux';
+// import createSagaMiddleware from 'redux-saga';
 import { rootReducer } from './reducers';
 
 export const configureStore = () => {
-  const sagaMiddleware = createSagaMiddleware();
+  // const sagaMiddleware = createSagaMiddleware();
 
   const store = createStore(
     rootReducer,
@@ -11,7 +11,7 @@ export const configureStore = () => {
     window.__REDUX_DEVTOOLS_EXTENSION__ &&
       window.__REDUX_DEVTOOLS_EXTENSION__(),
     /* eslint-disable */
-    applyMiddleware(sagaMiddleware)
+    // applyMiddleware(sagaMiddleware)
   );
 
   if (module.hot) {
@@ -21,7 +21,7 @@ export const configureStore = () => {
       store.replaceReducer(nextRootReducer);
     });
   }
-  store.runSaga = sagaMiddleware.run;
+  // store.runSaga = sagaMiddleware.run;
 
   return store;
 }

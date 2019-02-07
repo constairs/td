@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { FontAwesome } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDotCircle, faTrash, faPen, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { DropdownMenu } from '../index';
@@ -53,19 +53,19 @@ export class CardItem extends React.Component<Props, State> {
     return (
       <div className="card" style={{ backgroundColor: color }}>
         <button onClick={() => { this.setState({ optionsDropdown: true }); }}>
-          <FontAwesome icon={faDotCircle} />
+          <FontAwesomeIcon icon={faDotCircle} />
         </button>
 
         <DropdownMenu opened={optionsDropdown}>
           <React.Fragment>
             <button onClick={onEditItem}>
-              <FontAwesome icon={faPen} /> Edit
+              <FontAwesomeIcon icon={faPen} /> Edit
             </button>
             <button onClick={disabled ? enableItem : disableItem}>
-              <FontAwesome icon={disabled ? faCheck : faTimes} /> {disabled ? 'Enable' : 'Disable'}
+              <FontAwesomeIcon icon={disabled ? faCheck : faTimes} /> {disabled ? 'Enable' : 'Disable'}
             </button>
             <button onClick={onDeleteItem}>
-              <FontAwesome icon={faTrash} /> Delete
+              <FontAwesomeIcon icon={faTrash} /> Delete
             </button>
           </React.Fragment>
         </DropdownMenu>

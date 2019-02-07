@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { FontAwesome } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 export const Modal = ({
@@ -16,16 +16,16 @@ export const Modal = ({
   <React.Fragment>
     {
       opened && (
-        <div className="modal-overlay" onCLick={onCloseModal}>
+        <button className="modal-overlay" onCLick={onCloseModal}>
           <div className="modal">
             <button className="x-btn" onCLick={onCloseModal}>
-              <FontAwesome icon={faTimes} />
+              <FontAwesomeIcon icon={faTimes} />
             </button>
             <div className="modal-content">
               { children }
             </div>
           </div>
-        </div>
+        </button>
       )
     }
   </React.Fragment>
