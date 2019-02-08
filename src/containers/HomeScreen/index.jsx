@@ -11,12 +11,11 @@ import {
 import {
   CardItem,
   Modal,
-  CreateForm,
-  EditForm
+  CreateFormWithHooks,
+  EditFormWithHooks
 } from '../../components';
 
 import { createCardRequest } from '../../redux/cards/actions';
-
 
 export class Home extends React.Component<Object, Object> {
   state = {
@@ -54,8 +53,9 @@ export class Home extends React.Component<Object, Object> {
         disabled: false
       }
     ],
-    filter: 'default',
+    filterParam: 'default',
     editModal: false,
+    selectedId: '',
     createModal: false
   }
 
@@ -101,12 +101,20 @@ export class Home extends React.Component<Object, Object> {
 
   get FilteredCards() {
     const {
-      state: {
-        cardList,
-        filter: filterParam
-      }
-    } = this;
-    return cardList.filter((item: Object) => (item.importancy === filterParam));
+      cardList,
+      filterParam
+    } = this.state;
+
+    return cardList.filter(item => (item.importancy === filterParam));
+  }
+
+  get SelectedCard() {
+    const {
+      cardList,
+      selectedId
+    } = this.state;
+
+    return cardList.find(item => item.id === selectedId);
   }
 
   render() {
@@ -115,10 +123,11 @@ export class Home extends React.Component<Object, Object> {
         cardList,
         editModal,
         createModal,
-        filter
+        filterParam
       },
       FilteredCards,
-      onDragEnd
+      onDragEnd,
+      SelectedCard
     } = this;
     return (
       <React.Fragment>
@@ -130,10 +139,10 @@ export class Home extends React.Component<Object, Object> {
             }}
           >
             <div>
-              <button onClick={() => { this.setState({ filter: '' }); }}>All</button>
-              <button onClick={() => { this.setState({ filter: 'default' }); }}>Default</button>
-              <button onClick={() => { this.setState({ filter: 'important' }); }}>Important</button>
-              <button onClick={() => { this.setState({ filter: 'veryImportant' }); }}>Very Important</button>
+              <button onClick={() => { this.setState({ filterParam: '' }); }}>All</button>
+              <button onClick={() => { this.setState({ filterParam: 'default' }); }}>Default</button>
+              <button onClick={() => { this.setState({ filterParam: 'important' }); }}>Important</button>
+              <button onClick={() => { this.setState({ filterParam: 'veryImportant' }); }}>Very Important</button>
             </div>
             + Add Item
           </button>
@@ -142,7 +151,7 @@ export class Home extends React.Component<Object, Object> {
               {(
                 provided => (
                   <div ref={provided.innerRef}>
-                    {(filter ? cardList : FilteredCards).map(({
+                    {(filterParam ? cardList : FilteredCards).map(({
                         id,
                         title,
                         text,
@@ -170,7 +179,8 @@ export class Home extends React.Component<Object, Object> {
                                 }}
                                 onEditItem={() => {
                                   this.setState({
-                                    editModal: true
+                                    editModal: true,
+                                    selectedId: id,
                                   });
                                 }}
                               />
@@ -195,7 +205,7 @@ export class Home extends React.Component<Object, Object> {
             });
           }}
         >
-          <CreateForm
+          <CreateFormWithHooks
             onCreate={(createdCard) => {
               this.setState(({ cardList: list }) => ({
                 list: [...list, { ...createdCard, id: cardList.length + 1 }]
@@ -212,7 +222,8 @@ export class Home extends React.Component<Object, Object> {
             });
           }}
         >
-          <EditForm
+          <EditFormWithHooks
+            {...SelectedCard}
             onEdit={(editedCard) => {
               this.setState(({ cardList: list }) => ({
                 list: [...list, { ...editedCard, id: cardList.length + 1 }]

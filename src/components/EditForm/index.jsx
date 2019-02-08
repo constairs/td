@@ -96,7 +96,7 @@ export class EditForm extends React.Component<Props, Object> {
         </label>
 
         <button type="submit">
-          Add
+          Edit
         </button>
 
       </form>
