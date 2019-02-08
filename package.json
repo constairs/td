@@ -22,6 +22,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.1.0-11",
     "@fortawesome/react-fontawesome": "0.1.0-11",
     "classnames": "2.2.5",
+    "firebase": "^5.8.2",
     "history": "4.7.2",
     "prop-types": "15.6.1",
     "react": "16.8.0",
