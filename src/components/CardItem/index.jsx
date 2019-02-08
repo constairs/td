@@ -58,13 +58,13 @@ export class CardItem extends React.Component<Props, State> {
 
         <DropdownMenu opened={optionsDropdown}>
           <React.Fragment>
-            <button onClick={onEditItem}>
+            <button className="btn btn-sm" onClick={onEditItem}>
               <FontAwesomeIcon icon={faPen} /> Edit
             </button>
-            <button onClick={disabled ? enableItem : disableItem}>
+            <button className="btn btn-sm" onClick={disabled ? enableItem : disableItem}>
               <FontAwesomeIcon icon={disabled ? faCheck : faTimes} /> {disabled ? 'Enable' : 'Disable'}
             </button>
-            <button onClick={onDeleteItem}>
+            <button className="btn btn-sm" onClick={onDeleteItem}>
               <FontAwesomeIcon icon={faTrash} /> Delete
             </button>
           </React.Fragment>

@@ -106,7 +106,7 @@ export class Home extends React.Component<Object, Object> {
         filter: filterParam
       }
     } = this;
-    return cardList.filter(item => (item.importancy === filterParam));
+    return cardList.filter((item: Object) => (item.importancy === filterParam));
   }
 
   render() {
@@ -124,9 +124,10 @@ export class Home extends React.Component<Object, Object> {
       <React.Fragment>
         <h1>Home</h1>
         <div className="grid">
-          <button onClick={() => {
-            this.setState({ createModal: true });
-          }}
+          <button
+            onClick={() => {
+              this.setState({ createModal: true });
+            }}
           >
             <div>
               <button onClick={() => { this.setState({ filter: '' }); }}>All</button>
