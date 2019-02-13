@@ -56,18 +56,37 @@ export class CardItem extends React.Component<Props, State> {
           <FontAwesomeIcon icon={faDotCircle} />
         </button>
 
-        <DropdownMenu opened={optionsDropdown}>
-          <React.Fragment>
-            <button className="btn btn-sm" onClick={onEditItem}>
-              <FontAwesomeIcon icon={faPen} /> Edit
-            </button>
-            <button className="btn btn-sm" onClick={disabled ? enableItem : disableItem}>
-              <FontAwesomeIcon icon={disabled ? faCheck : faTimes} /> {disabled ? 'Enable' : 'Disable'}
-            </button>
-            <button className="btn btn-sm" onClick={onDeleteItem}>
-              <FontAwesomeIcon icon={faTrash} /> Delete
-            </button>
-          </React.Fragment>
+        <DropdownMenu
+          opened={optionsDropdown}
+          content={
+            <React.Fragment>
+              <button className="btn" onClick={onEditItem}>
+                <FontAwesomeIcon icon={faPen} /> Edit
+              </button>
+              <button className="btn" onClick={disabled ? enableItem : disableItem}>
+                <FontAwesomeIcon icon={disabled ? faCheck : faTimes} /> {disabled ? 'Enable' : 'Disable'}
+              </button>
+              <button className="btn" onClick={onDeleteItem}>
+                <FontAwesomeIcon icon={faTrash} /> Delete
+              </button>
+            </React.Fragment>
+          }
+        >
+          {({ open }) => (
+            // eslint-disable-next-line
+            <a
+              onClick={open}
+              style={{
+                top: 24,
+                right: 24,
+                cursor: 'pointer',
+                color: '#aaa',
+                fontSize: 20,
+              }}
+            >
+              <FontAwesomeIcon icon={faDotCircle} />
+            </a>
+          )}
         </DropdownMenu>
 
         <h3 className="card_title">
