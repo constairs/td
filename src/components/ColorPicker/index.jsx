@@ -16,6 +16,7 @@ export const ColorPicker = ({
       colors && colors.map(color => (
         <li key={color}>
           <button
+            type="button"
             className={color === value
               ? 'color-picker-item active'
               : 'color-picker-item'}

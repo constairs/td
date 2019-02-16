@@ -22,10 +22,10 @@ const createCardFail = (state, error) => ({
   error
 });
 
-export const cardsReducer = (type, action) = {
+// export const cardsReducer = (type, action) = {
   // {
   //   'CREATE_CARD_REQUEST': createCardRequest(state, action.payload),
   //   'CREATE_CARD_SUCCESS': createCardSuccess(state, action.payload),
   //   'CREATE_CARD_FAIL': createCardFail(state, action.payload)
   // }[type]
-};
+// };

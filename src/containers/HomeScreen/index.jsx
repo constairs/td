@@ -133,92 +133,99 @@ export class Home extends React.Component<Object, Object> {
       <React.Fragment>
         <h1>Home</h1>
         <div className="grid">
+
+          {/* <div>
+            <button onClick={() => { this.setState({ filterParam: '' }); }}>All</button>
+            <button onClick={() => { this.setState({ filterParam: 'default' }); }}>Default</button>
+            <button onClick={() => { this.setState({ filterParam: 'important' }); }}>Important</button>
+            <button onClick={() => { this.setState({ filterParam: 'veryImportant' }); }}>Very Important</button>
+          </div> */}
+
           <button
+            className="btn btn-md"
             onClick={() => {
               this.setState({ createModal: true });
             }}
           >
-            <div>
-              <button onClick={() => { this.setState({ filterParam: '' }); }}>All</button>
-              <button onClick={() => { this.setState({ filterParam: 'default' }); }}>Default</button>
-              <button onClick={() => { this.setState({ filterParam: 'important' }); }}>Important</button>
-              <button onClick={() => { this.setState({ filterParam: 'veryImportant' }); }}>Very Important</button>
-            </div>
             + Add Item
           </button>
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="cards">
-              {(
-                provided => (
-                  <div ref={provided.innerRef}>
-                    {(filterParam ? cardList : FilteredCards).map(({
-                        id,
-                        title,
-                        text,
-                        color,
-                        disabled
-                      }, index) => (
-                        <Draggable index={index} key={id} draggableId={id}>
-                          {({ innerRef }, { isDragging }) => (
-                            <div ref={innerRef}>
-                              <CardItem
-                                id={id}
-                                title={title}
-                                text={text}
-                                color={color}
-                                disabled={disabled}
-                                style={{
-                                  border: isDragging
-                                  ? '2px solid #cc0000'
-                                  : '1px solid #2b2b2b'
-                                }}
-                                onDeleteItem={() => {
-                                    this.setState(({ cardList: list }) => ({
-                                      cardList: list.filter(card => card.id !== id)
-                                    }));
-                                }}
-                                onEditItem={() => {
-                                  this.setState({
-                                    editModal: true,
-                                    selectedId: id,
-                                  });
-                                }}
-                              />
-                            </div>
-                          )}
-                        </Draggable>
-                      ))
-                    }
-                    {provided.placeholder}
-                  </div>
-                )
-              )}
+              {provided => (
+                <div className="grid" ref={provided.innerRef}>
+                  {(filterParam ? cardList : FilteredCards).map(
+                      ({
+                        id, title, text, color, disabled
+                        }, index) => (
+                          <Draggable index={index} key={id} draggableId={id}>
+                            {(provided, { isDragging }) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <CardItem
+                                  id={id}
+                                  title={title}
+                                  text={text}
+                                  color={color}
+                                  disabled={disabled}
+                                  style={{
+                                                          border: isDragging
+                                                            ? '2px solid #cc0000'
+                                                            : '1px solid #2b2b2b'
+                                                        }}
+                                  onDeleteItem={() => {
+                                                          this.setState(({ cardList: list }) => ({
+                                                            cardList: list.filter(
+                                                              card => card.id !== id
+                                                            )
+                                                          }));
+                                                        }}
+                                  onEditItem={() => {
+                                                          this.setState({
+                                                            editModal: true
+                                                          });
+                                                        }}
+                                />
+                              </div>
+                                                  )}
+                          </Draggable>
+                                              )
+                    )}
+                  {provided.placeholder}
+                </div>
+                )}
             </Droppable>
           </DragDropContext>
         </div>
-
-        <Modal
-          opened={editModal}
-          onCloseModal={() => {
-            this.setState({
-              editModal: false
-            });
-          }}
-        >
-          <CreateFormWithHooks
-            onCreate={(createdCard) => {
-              this.setState(({ cardList: list }) => ({
-                list: [...list, { ...createdCard, id: cardList.length + 1 }]
-              }));
-            }}
-          />
-        </Modal>
 
         <Modal
           opened={createModal}
           onCloseModal={() => {
             this.setState({
               createModal: false
+            });
+          }}
+        >
+          <CreateFormWithHooks
+            onCreate={(createdCard) => {
+              this.setState(state => ({
+                cardList: [
+                  ...state.cardList,
+                  { ...createdCard, id: state.cardList.length + 1 }
+                ],
+                createModal: false
+              }));
+            }}
+          />
+        </Modal>
+
+        <Modal
+          opened={editModal}
+          onCloseModal={() => {
+            this.setState({
+              editModal: false
             });
           }}
         >

@@ -1,11 +1,19 @@
 @import 'variables';
 @import '../../components/Modal/index.scss';
 @import '../../components/ColorPicker/index.scss';
-@import '../components/CardItem/index.scss';
+@import '../../components/CardItem/index.scss';
+@import '../../components//DropdownMenu/index.scss';
+
+*:focus {
+  outline: none;
+}
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  // grid-template-columns: 1fr 1fr 1fr 1fr;
+  > div {
+    margin: 20px 0;
+  }
 }
 
 .btn {
@@ -41,4 +49,29 @@
     width: 200px;
     height: 45px;
   };
+}
+
+button {
+  border: none;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+}
+
+input {
+  height: 40px;
+  width: 100%;
+  max-width: 400px;
+  min-width: 50px;
+  display: block;
+  border-radius: 4px;
+  border: 1px solid #cccccc;
+  text-indent: 6px;
+}
+
+label {
+  .descr {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
 }

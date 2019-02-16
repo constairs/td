@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDotCircle, faTrash, faPen, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisV, faTrash, faPen, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { DropdownMenu } from '../index';
 
@@ -51,9 +51,9 @@ export class CardItem extends React.Component<Props, State> {
       }
     } = this;
     return (
-      <div className="card" style={{ backgroundColor: color }}>
+      <div className={`card ${color.slice(1) || 'default'}`}>
         <button onClick={() => { this.setState({ optionsDropdown: true }); }}>
-          <FontAwesomeIcon icon={faDotCircle} />
+          <FontAwesomeIcon icon={faEllipsisV} />
         </button>
 
         <DropdownMenu opened={optionsDropdown}>

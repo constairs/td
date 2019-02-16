@@ -12,13 +12,14 @@ type Props = {
   onSubmit: (formData: Object) => any
 };
 
-export const EditFormWithHooks = ({
+export function EditFormWithHooks({
   title,
   text,
   color,
   importancy,
   onSubmit
-} : Props) => {
+} : Props) {
+  console.log(useState(title));
   const [tit, useTitle] = useState(title);
   const [txt, useText] = useState(text);
   const [col, useColor] = useState(color);
@@ -83,7 +84,7 @@ export const EditFormWithHooks = ({
           value={{
             value: imp,
             // $FlowFixMe
-            label: `${String.toUpperCase(imp[0])}${imp.slice(1)}`
+            label: `${imp && String.toUpperCase(imp[0])}${imp && imp.slice(1)}`
           }}
           onChange={({ target: { value } }) => {
             userImportancy(value);
@@ -96,4 +97,4 @@ export const EditFormWithHooks = ({
       </button>
     </form>
   );
-};
+}

@@ -11,7 +11,8 @@ export const CreateFormWithHooks = ({ onCreate } : { onCreate: (formData: Object
 
   return (
     <form
-      onSubmit={() => {
+      onSubmit={(e) => {
+        e.preventDefault();
         onCreate({
           title,
           text,
@@ -21,6 +22,7 @@ export const CreateFormWithHooks = ({ onCreate } : { onCreate: (formData: Object
       }}
     >
       <label htmlFor="title">
+        <span className="descr">Title</span>
         <input
           id="title"
           name="title"
@@ -30,6 +32,7 @@ export const CreateFormWithHooks = ({ onCreate } : { onCreate: (formData: Object
       </label>
 
       <label htmlFor="text">
+        <span className="descr">Text</span>
         <input
           id="text"
           name="text"
@@ -38,12 +41,15 @@ export const CreateFormWithHooks = ({ onCreate } : { onCreate: (formData: Object
         />
       </label>
 
-      <span>Color</span>
-      <ColorPicker
-        value={color}
-        colors={['#cc0000', '#f0f0f0', '#2b2b2b']}
-        onSwitch={(switchedColor) => { useColor(switchedColor); }}
-      />
+      <label htmlFor="colorPicker">
+        <span className="descr">Color</span>
+        <ColorPicker
+          id="colorPicker"
+          value={color}
+          colors={['#cc0000', '#f0f0f0', '#2b2b2b']}
+          onSwitch={(switchedColor) => { useColor(switchedColor); }}
+        />
+      </label>
 
       <label htmlFor="importancy">
         <Select
@@ -54,16 +60,20 @@ export const CreateFormWithHooks = ({ onCreate } : { onCreate: (formData: Object
             { value: 'important', label: 'Important' },
             { value: 'veryImportant', label: 'Very important' },
           ]}
+          defaultValue={importancy.value}
           value={{
-            value: importancy,
-            // $FlowFixMe
-            label: `${String.toUpperCase(importancy[0])}${importancy.slice(1)}`
+            value: importancy.value,
+            label: importancy.label
           }}
-          onChange={({ target: { value } }) => {
+          onChange={(value) => {
             useImportancy(value);
           }}
         />
       </label>
+
+      <button className="btn btn-md">
+        Submit
+      </button>
     </form>
   );
 };

@@ -4,6 +4,8 @@ import { Modal } from './Modal';
 import { ColorPicker } from './ColorPicker';
 import { CreateForm } from './CreateForm';
 import { EditForm } from './EditForm';
+import { EditFormWithHooks } from './EditFormWithHooks';
+import { CreateFormWithHooks } from './CreateFormWithHooks';
 
 export {
   CardItem,
@@ -11,5 +13,7 @@ export {
   Modal,
   ColorPicker,
   CreateForm,
-  EditForm
+  EditForm,
+  EditFormWithHooks,
+  CreateFormWithHooks
 };
