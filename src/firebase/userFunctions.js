@@ -52,15 +52,15 @@ export function signOut() {
   });
 }
 
-export function updateProfile(profileName, profileImg) {
+export function updateProfile(displayName, photoURL) {
   return new Promise((resolve, reject) => {
     const user = firebase.auth().currentUser;
 
     user.updateProfile({
-      displayName: profileName,
-      photoURL: profileImg
+      displayName,
+      photoURL
     }).then(() => {
-      resolve({ profileName, profileImg });
+      resolve({ displayName, photoURL });
     }).catch((error) => {
       reject(error);
     });

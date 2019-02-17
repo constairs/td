@@ -5,9 +5,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { userLoginRequest as userLogin } from '../../redux/users/actions';
 
+// claiv luwis - otmena cheloveka
+
 const Login = ({
   userLoginRequest
-}: {
+} : {
   userLoginRequest: (credentials: Object) => any
 }) => {
   const [email, useEmail] = useState('');

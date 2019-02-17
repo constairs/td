@@ -1,6 +1,15 @@
 // @flow
 
 import React from 'react';
+import styled from 'styled-components';
+
+export const PickerItem = styled.button`
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  background-color: ${({ color }) => color};
+  border: 2px solid ${({ active }) => (active ? '#2b2b2b' : 'transparent')};
+`;
 
 export const ColorPicker = ({
   value,
@@ -15,14 +24,9 @@ export const ColorPicker = ({
     {
       colors && colors.map(color => (
         <li key={color}>
-          <button
-            type="button"
-            className={color === value
-              ? 'color-picker-item active'
-              : 'color-picker-item'}
-            style={{
-              backgroundColor: color
-            }}
+          <PickerItem
+            active={color === value}
+            color={color}
             onClick={() => { onSwitch(color); }}
           />
         </li>

@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { useState } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
@@ -17,49 +17,47 @@ import {
 
 import { createCardRequest } from '../../redux/cards/actions';
 
-export class Home extends React.Component<Object, Object> {
-  state = {
-    cardList: [
-      {
-        id: '1',
-        title: 'Card1',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
-        importancy: 'default',
-        color: '#ffffff',
-        disabled: false
-      },
-      {
-        id: '2',
-        title: 'Card2',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
-        importancy: 'default',
-        color: '#ffffff',
-        disabled: false
-      },
-      {
-        id: '3',
-        title: 'Card3',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
-        importancy: 'default',
-        color: '#ffffff',
-        disabled: false
-      },
-      {
-        id: '4',
-        title: 'Card4',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
-        importancy: 'default',
-        color: '#ffffff',
-        disabled: false
-      }
-    ],
-    filterParam: 'default',
-    editModal: false,
-    selectedId: '',
-    createModal: false
-  }
+const Home = () => {
+  const [cardList, useList] = useState([
+    {
+      id: '1',
+      title: 'Card1',
+      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
+      importancy: 'default',
+      color: '#ffffff',
+      disabled: false
+    },
+    {
+      id: '2',
+      title: 'Card2',
+      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
+      importancy: 'default',
+      color: '#ffffff',
+      disabled: false
+    },
+    {
+      id: '3',
+      title: 'Card3',
+      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
+      importancy: 'default',
+      color: '#ffffff',
+      disabled: false
+    },
+    {
+      id: '4',
+      title: 'Card4',
+      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, tempora!',
+      importancy: 'default',
+      color: '#ffffff',
+      disabled: false
+    }
+  ]);
+  const [filterParam, useParam] = useState('default');
+  const [editModal, useEdit] = useState(false);
+  const [selectedId, selectId] = useState('');
+  const [createModal, useCreate] = useState(false);
 
-  onDragEnd = ({
+  const onDragEnd = ({
     source,
     destination,
   }: Object) => {
@@ -67,10 +65,6 @@ export class Home extends React.Component<Object, Object> {
     type DroppableId = 'cards';
     const sourceId: DroppableId = source.droppableId;
     const destinationId: DroppableId = destination.droppableId;
-
-    const {
-      cardList = []
-    } = this.state;
 
     const sourceAnswers = sourceId === 'cards' ? cardList : [];
     const destinationAnswers = destinationId !== 'cards' ? [] : cardList;
@@ -93,155 +87,101 @@ export class Home extends React.Component<Object, Object> {
     }
     destinationAnswersUpdated.splice(destination.index, 0, removed);
 
-    this.setState({
-      [sourceId]: sourceAnswersUpdated,
-      [destinationId]: destinationAnswersUpdated,
-    });
+    useList(destinationAnswersUpdated);
   };
 
-  get FilteredCards() {
-    const {
-      cardList,
-      filterParam
-    } = this.state;
+  const FilteredCards = () => cardList.filter(item => (item.importancy === filterParam));
+  const SelectedCard = () => cardList.find(item => item.id === selectedId);
 
-    return cardList.filter(item => (item.importancy === filterParam));
-  }
-
-  get SelectedCard() {
-    const {
-      cardList,
-      selectedId
-    } = this.state;
-
-    return cardList.find(item => item.id === selectedId);
-  }
-
-  render() {
-    const {
-      state: {
-        cardList,
-        editModal,
-        createModal,
-        filterParam
-      },
-      FilteredCards,
-      onDragEnd,
-      SelectedCard
-    } = this;
-    return (
-      <React.Fragment>
-        <h1>Home</h1>
-        <div className="grid">
-
-          {/* <div>
-            <button onClick={() => { this.setState({ filterParam: '' }); }}>All</button>
-            <button onClick={() => { this.setState({ filterParam: 'default' }); }}>Default</button>
-            <button onClick={() => { this.setState({ filterParam: 'important' }); }}>Important</button>
-            <button onClick={() => { this.setState({ filterParam: 'veryImportant' }); }}>Very Important</button>
-          </div> */}
-
-          <button
-            className="btn btn-md"
-            onClick={() => {
-              this.setState({ createModal: true });
-            }}
-          >
-            + Add Item
-          </button>
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="cards">
-              {provided => (
-                <div className="grid" ref={provided.innerRef}>
-                  {(filterParam ? cardList : FilteredCards).map(
-                      ({
-                        id, title, text, color, disabled
-                        }, index) => (
-                          <Draggable index={index} key={id} draggableId={id}>
-                            {(provided, { isDragging }) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
-                                <CardItem
-                                  id={id}
-                                  title={title}
-                                  text={text}
-                                  color={color}
-                                  disabled={disabled}
-                                  style={{
-                                                          border: isDragging
-                                                            ? '2px solid #cc0000'
-                                                            : '1px solid #2b2b2b'
-                                                        }}
-                                  onDeleteItem={() => {
-                                                          this.setState(({ cardList: list }) => ({
-                                                            cardList: list.filter(
-                                                              card => card.id !== id
-                                                            )
-                                                          }));
-                                                        }}
-                                  onEditItem={() => {
-                                                          this.setState({
-                                                            editModal: true
-                                                          });
-                                                        }}
-                                />
-                              </div>
-                                                  )}
-                          </Draggable>
-                                              )
-                    )}
+  return (
+    <React.Fragment>
+      <h1>Home</h1>
+      <div className="grid">
+        <div>
+          <button onClick={() => { useParam(''); }}>All</button>
+          <button onClick={() => { useParam('default'); }}>Default</button>
+          <button onClick={() => { useParam('important'); }}>Important</button>
+          <button onClick={() => { useParam('veryImportant'); }}>Very Important</button>
+        </div>
+        <button onClick={() => { useCreate(true); }}>
+          + Add Item
+        </button>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="cards">
+            {(
+              provided => (
+                <div ref={provided.innerRef}>
+                  {(filterParam ? cardList : FilteredCards).map(({
+                      id,
+                      title,
+                      text,
+                      color,
+                      disabled
+                    }, index) => (
+                      <Draggable index={index} key={id} draggableId={id}>
+                        {({ innerRef }, { isDragging }) => (
+                          <div ref={innerRef}>
+                            <CardItem
+                              id={id}
+                              title={title}
+                              text={text}
+                              color={color}
+                              disabled={disabled}
+                              style={{
+                                border: isDragging
+                                ? '2px solid #cc0000'
+                                : '1px solid #2b2b2b'
+                              }}
+                              onDeleteItem={() => {
+                                useList(cardList.filter(card => card.id !== id));
+                              }}
+                              onEditItem={() => {
+                                useEdit(true);
+                                selectId(id);
+                              }}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))
+                  }
                   {provided.placeholder}
                 </div>
-                )}
-            </Droppable>
-          </DragDropContext>
-        </div>
+              )
+            )}
+          </Droppable>
+        </DragDropContext>
+      </div>
 
-        <Modal
-          opened={createModal}
-          onCloseModal={() => {
-            this.setState({
-              createModal: false
-            });
+      <Modal
+        opened={editModal}
+        onCloseModal={() => {
+          useEdit(false);
+        }}
+      >
+        <CreateFormWithHooks
+          onCreate={(createdCard) => {
+            useList([...cardList, { ...createdCard, id: cardList.length + 1 }]);
           }}
-        >
-          <CreateFormWithHooks
-            onCreate={(createdCard) => {
-              this.setState(state => ({
-                cardList: [
-                  ...state.cardList,
-                  { ...createdCard, id: state.cardList.length + 1 }
-                ],
-                createModal: false
-              }));
-            }}
-          />
-        </Modal>
+        />
+      </Modal>
 
-        <Modal
-          opened={editModal}
-          onCloseModal={() => {
-            this.setState({
-              editModal: false
-            });
+      <Modal
+        opened={createModal}
+        onCloseModal={() => {
+          useCreate(false);
+        }}
+      >
+        <EditFormWithHooks
+          {...SelectedCard}
+          onEdit={(editedCard) => {
+            useList([...cardList, { ...editedCard, id: cardList.length + 1 }]);
           }}
-        >
-          <EditFormWithHooks
-            {...SelectedCard}
-            onEdit={(editedCard) => {
-              this.setState(({ cardList: list }) => ({
-                list: [...list, { ...editedCard, id: cardList.length + 1 }]
-              }));
-            }}
-          />
-        </Modal>
-      </React.Fragment>
-    );
-  }
-}
+        />
+      </Modal>
+    </React.Fragment>
+  );
+};
 
 export const HomeScreen = connect(
   state => ({
