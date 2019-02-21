@@ -11,6 +11,7 @@ export const CreateFormWithHooks = ({ onCreate } : { onCreate: (formData: Object
 
   return (
     <form
+      className="create-form"
       onSubmit={(e) => {
         e.preventDefault();
         onCreate({
@@ -46,7 +47,7 @@ export const CreateFormWithHooks = ({ onCreate } : { onCreate: (formData: Object
         <ColorPicker
           id="colorPicker"
           value={color}
-          colors={['#cc0000', '#f0f0f0', '#2b2b2b']}
+          colors={['#cc0000', '#f0f0f0', '#2b2b2b', '#6AC8C8', '#f05050']}
           onSwitch={(switchedColor) => { useColor(switchedColor); }}
         />
       </label>

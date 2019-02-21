@@ -46,6 +46,7 @@ export function EditFormWithHooks({
       }}
     >
       <label htmlFor="title">
+        <span className="descr">Title</span>
         <input
           type="text"
           id="title"
@@ -56,6 +57,7 @@ export function EditFormWithHooks({
       </label>
 
       <label htmlFor="surname">
+        <span className="descr">Text</span>
         <input
           type="text"
           id="surname"
@@ -65,12 +67,15 @@ export function EditFormWithHooks({
         />
       </label>
 
-      <span>Color</span>
-      <ColorPicker
-        value={col}
-        colors={['#cc0000', '#f0f0f0', '#2b2b2b']}
-        onSwitch={(switchedColor) => { useColor(switchedColor); }}
-      />
+      <label htmlFor="colorPicker">
+        <span className="descr">Color</span>
+        <ColorPicker
+          id="colorPicker"
+          value={color}
+          colors={['#cc0000', '#f0f0f0', '#2b2b2b']}
+          onSwitch={(switchedColor) => { useColor(switchedColor); }}
+        />
+      </label>
 
       <label htmlFor="importancy">
         <Select

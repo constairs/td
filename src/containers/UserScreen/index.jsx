@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { userUpdateRequest as userUpdate } from '../../redux/users/actions';
 
-// claiv luwis - otmena cheloveka
-
 const Login = ({
   userUpdateRequest
 } : {
@@ -14,6 +12,12 @@ const Login = ({
 }) => {
   const [displayName, useName] = useState('');
   const [photoURL, usePhoto] = useState('');
+
+  const attachPhoto = (value) => {
+    const fileReader = new FileReader();
+    const f = fileReader.readAsBinaryString(value);
+    usePhoto(f);
+  };
 
   return (
     <div>
@@ -41,9 +45,9 @@ const Login = ({
             id="userImg"
             name="userImg"
             value={photoURL}
-            onChange={({ target: { value } }) => { usePhoto(value); }}
+            onChange={({ target: { value } }) => { attachPhoto(value); }}
           />
-          {/* <img src={photoURL} alt={photoURL} /> */}
+          <img src={photoURL} alt={photoURL} />
         </label>
         <button type="submit">Login</button>
       </form>

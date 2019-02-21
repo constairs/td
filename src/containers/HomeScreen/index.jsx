@@ -119,8 +119,12 @@ const Home = () => {
                       disabled
                     }, index) => (
                       <Draggable index={index} key={id} draggableId={id}>
-                        {({ innerRef }, { isDragging }) => (
-                          <div ref={innerRef}>
+                        {({ innerRef, draggableProps, dragHandleProps }, { isDragging }) => (
+                          <div
+                            ref={innerRef}
+                            {...draggableProps}
+                            {...dragHandleProps}
+                          >
                             <CardItem
                               id={id}
                               title={title}

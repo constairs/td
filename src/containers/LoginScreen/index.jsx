@@ -25,6 +25,7 @@ const Login = ({
       }}
       >
         <label htmlFor="email">
+          <span className="descr">Email</span>
           <input
             type="text"
             id="email"
@@ -34,6 +35,7 @@ const Login = ({
           />
         </label>
         <label htmlFor="password">
+          <span className="descr">Password</span>
           <input
             type="text"
             id="password"

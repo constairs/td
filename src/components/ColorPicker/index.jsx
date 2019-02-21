@@ -26,6 +26,7 @@ export const ColorPicker = ({
         <li key={color}>
           <PickerItem
             active={color === value}
+            type="button"
             color={color}
             onClick={() => { onSwitch(color); }}
           />

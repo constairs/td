@@ -51,10 +51,11 @@ export class CardItem extends React.Component<Props, State> {
       }
     } = this;
     return (
-      <div className={`card ${color.slice(1) || 'default'}`}>
-        <button onClick={() => { this.setState({ optionsDropdown: true }); }}>
-          <FontAwesomeIcon icon={faEllipsisV} />
-        </button>
+      <div className={`card ${
+        // $FlowFixMe
+        color.slice(1) || 'default'
+      }`}
+      >
 
         <DropdownMenu
           opened={optionsDropdown}
@@ -75,7 +76,7 @@ export class CardItem extends React.Component<Props, State> {
           {({ open }) => (
             // eslint-disable-next-line
             <a
-              onClick={open}
+              onClick={() => { open(); this.setState({ optionsDropdown: true }); }}
               style={{
                 top: 24,
                 right: 24,
@@ -84,8 +85,52 @@ export class CardItem extends React.Component<Props, State> {
                 fontSize: 20,
               }}
             >
-              <FontAwesomeIcon icon={faDotCircle} />
+              <FontAwesomeIcon icon={faEllipsisV} />
             </a>
+          )}
+        </DropdownMenu>
+
+        <DropdownMenu
+          style={{ width: 200 }}
+          content={({ close }) => (
+            <div style={{ fontSize: 14, margin: -8 }}>
+              <DropdownMenu.MenuItem onClick={() => { onEditItem(); close(); }}>
+                <FontAwesomeIcon icon={faPen} /> Edit
+              </DropdownMenu.MenuItem>
+              <DropdownMenu.MenuItem onClick={() => {
+                if (disabled) {
+                  enableItem();
+                } else {
+                  disableItem();
+                }
+                close();
+              }}
+              >
+                <FontAwesomeIcon icon={disabled ? faCheck : faTimes} /> {disabled ? 'Enable' : 'Disable'}
+              </DropdownMenu.MenuItem>
+              <DropdownMenu.MenuItem onClick={() => {
+                onDeleteItem(); close();
+              }}
+              >
+                <FontAwesomeIcon icon={faTrash} /> Delete
+              </DropdownMenu.MenuItem>
+            </div>
+          )}
+        >
+          {({ open }) => (
+            <button
+              id="popoverBtnTitle"
+              onClick={(e) => { open(e); }}
+              style={{
+                top: 24,
+                right: 24,
+                cursor: 'pointer',
+                color: '#aaa',
+                fontSize: 20,
+              }}
+            >
+              <FontAwesomeIcon icon={faEllipsisV} />
+            </button>
           )}
         </DropdownMenu>
 
