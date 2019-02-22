@@ -1,77 +1,6 @@
-// @flow
-
-// import React, { useState } from 'react';
-// import styled from 'styled-components';
-
-// const DropdownOverlay = styled.div`
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   right: 0;
-//   bottom: 0;
-// `;
-
-// export const DropdownMenu = ({
-//   opened,
-//   content,
-//   children,
-//   onClose
-// } : {
-//   opened: boolean,
-//   content: Object,
-//   children: Object,
-//   onClose: () => void
-// }) => {
-//   const [openedState, useOpened] = useState(false);
-//   const [topState, useTop] = useState(0);
-//   const [leftState, useLeft] = useState(0);
-
-//   const isOutOfLimit = leftState + 200 > window.innerWidth;
-
-//   const open = (e: MouseEvent) => {
-//     if (e.currentTarget && e.currentTarget instanceof Element) {
-//       const { left, top, height } = (e.currentTarget).getBoundingClientRect();
-//       useOpened(true);
-//       useTop(top + height + 8);
-//       useLeft(left);
-//     }
-//   };
-
-//   return (
-//     <React.Fragment>
-//       {
-//         opened && (
-//           <DropdownOverlay
-//             onClick={(e) => {
-//               if (e.target === e.currentTarget) {
-//                 onClose();
-//               }
-//             }}
-//           >
-//             <div
-//               className="dropdown-content"
-//               style={{
-//                 topState,
-//                 left: isOutOfLimit ? 'auto' : leftState,
-//                 right: isOutOfLimit ? 8 : 'auto'
-//               }}
-//             >
-//               { content && content }
-//             </div>
-//           </DropdownOverlay>
-
-//         )
-//       }
-//       { children && children(open, openedState) }
-//     </React.Fragment>
-//   );
-// };
-
-// @flow
-
-import * as React from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-
 
 const Overlay = styled.div`
   position: fixed;
@@ -82,7 +11,7 @@ const Overlay = styled.div`
   z-index: 998;
 `;
 
-const PopoverStyled = styled.div`
+const DropdownStyled = styled.div`
   padding: 16px;
   position: fixed;
   min-width: 10px;
@@ -90,6 +19,7 @@ const PopoverStyled = styled.div`
   left: 0;
   z-index: 2000;
   border: 1px solid #D8D8D8;
+  background-color: #fff;
 `;
 
 export const MenuItem = styled.a`
@@ -104,20 +34,9 @@ export const MenuItem = styled.a`
   }
 `;
 
-
-type Props = {
-  opened?: boolean,
-  // eslint-disable-next-line
-  onClose: Function,
-  children?: ({ open: (e: MouseEvent) => void, opened: boolean }) => React.Node,
-  content?: React.Node | ({ close: () => void }) => React.Node,
-  style?: Object,
-};
-
-export class DropdownMenu extends React.Component<Props, Object> {
+export class DropdownMenu extends React.Component {
   static defaultProps = {
     opened: false,
-    onClose() {},
     children: () => {},
     content: null,
     style: {},
@@ -154,7 +73,7 @@ export class DropdownMenu extends React.Component<Props, Object> {
       state: {
         opened,
         left,
-        top,
+        top
       },
       props: {
         children,
@@ -176,7 +95,7 @@ export class DropdownMenu extends React.Component<Props, Object> {
               }
             }}
           >
-            <PopoverStyled
+            <DropdownStyled
               {...props}
               style={{
                 top,
@@ -190,7 +109,7 @@ export class DropdownMenu extends React.Component<Props, Object> {
                   ? content({ close })
                   : content
               )}
-            </PopoverStyled>
+            </DropdownStyled>
           </Overlay>
         )}
         {children && children({ open, opened })}
@@ -198,3 +117,11 @@ export class DropdownMenu extends React.Component<Props, Object> {
     );
   };
 }
+
+DropdownMenu.propTypes = {
+  opened: PropTypes.bool,
+  onClose: PropTypes.func.isRequired,
+  children: PropTypes.node,
+  content: PropTypes.node,
+  style: PropTypes.objectOf(PropTypes.any)
+};

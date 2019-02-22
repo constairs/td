@@ -1,6 +1,5 @@
-// @flow
-
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 export const PickerItem = styled.button`
@@ -15,10 +14,6 @@ export const ColorPicker = ({
   value,
   colors,
   onSwitch
-} : {
-  value: string,
-  colors: string[],
-  onSwitch: (color: string) => any
 }) => (
   <ul className="color-picker">
     {
@@ -35,3 +30,9 @@ export const ColorPicker = ({
     }
   </ul>
 );
+
+ColorPicker.propTypes = {
+  value: PropTypes.string.isRequired,
+  colors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onSwitch: PropTypes.func.isRequired
+};

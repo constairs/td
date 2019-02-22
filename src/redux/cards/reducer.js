@@ -5,27 +5,29 @@ const initState = {
   error: null
 };
 
-const createCardRequest = (state = initState) => ({
-  ...state,
-  fetching: true,
-});
+export const cardsReducer = (state = initState, action) => {
+  switch (action.type) {
+    case TYPES.CREATE_CARD_REQUEST:
+      return ({
+        ...state,
+        fetching: true,
+      });
 
-const createCardSuccess = (state, payload) => ({
-  ...state,
-  fetching: false,
-  cards: [...state.cards, payload]
-});
+    case TYPES.CREATE_CARD_SUCCESS:
+      return ({
+        ...state,
+        cards: [...state.cards, ...action.payload],
+        fetching: false
+      });
 
-const createCardFail = (state, error) => ({
-  ...state,
-  fetching: false,
-  error
-});
+    case TYPES.CREATE_CARD_FAIL:
+      return ({
+        ...state,
+        error: action.payload,
+        fetching: false
+      });
 
-// export const cardsReducer = (type, action) = {
-  // {
-  //   'CREATE_CARD_REQUEST': createCardRequest(state, action.payload),
-  //   'CREATE_CARD_SUCCESS': createCardSuccess(state, action.payload),
-  //   'CREATE_CARD_FAIL': createCardFail(state, action.payload)
-  // }[type]
-// };
+    default:
+      return initState;
+  }
+};

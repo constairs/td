@@ -1,14 +1,11 @@
-// @flow
-
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { userUpdateRequest as userUpdate } from '../../redux/users/actions';
 
 const Login = ({
   userUpdateRequest
-} : {
-  userUpdateRequest: (credentials: Object) => any
 }) => {
   const [displayName, useName] = useState('');
   const [photoURL, usePhoto] = useState('');
@@ -61,3 +58,7 @@ export const LoginScreen = connect(
     bindActionCreators({ userUpdate }, dispatch);
   }
 )(Login);
+
+Login.propTypes = {
+  userUpdateRequest: PropTypes.func.isRequired
+};

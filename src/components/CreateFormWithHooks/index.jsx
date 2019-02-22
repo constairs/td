@@ -1,20 +1,26 @@
 import React, { useState } from 'react';
-
+import PropTypes from 'prop-types';
 import Select from 'react-select';
 import { ColorPicker } from '../index';
 
-export const CreateFormWithHooks = ({ onCreate } : { onCreate: (formData: Object) => any }) => {
-  const [title, useTitle] = useState('');
-  const [text, useText] = useState('');
-  const [color, useColor] = useState('');
-  const [importancy, useImportancy] = useState('');
+export function CreateFormWithHooks({
+  title,
+  text,
+  color,
+  importancy,
+  onSubmit
+}) {
+  const [tit, useTitle] = useState(title);
+  const [txt, useText] = useState(text);
+  const [clr, useColor] = useState(color);
+  const [imp, useImportancy] = useState(importancy);
 
   return (
     <form
       className="create-form"
       onSubmit={(e) => {
         e.preventDefault();
-        onCreate({
+        onSubmit({
           title,
           text,
           color,
@@ -27,7 +33,7 @@ export const CreateFormWithHooks = ({ onCreate } : { onCreate: (formData: Object
         <input
           id="title"
           name="title"
-          value={title}
+          value={tit}
           onChange={({ target: { value } }) => { useTitle(value); }}
         />
       </label>
@@ -37,7 +43,7 @@ export const CreateFormWithHooks = ({ onCreate } : { onCreate: (formData: Object
         <input
           id="text"
           name="text"
-          value={text}
+          value={txt}
           onChange={({ target: { value } }) => { useText(value); }}
         />
       </label>
@@ -46,7 +52,7 @@ export const CreateFormWithHooks = ({ onCreate } : { onCreate: (formData: Object
         <span className="descr">Color</span>
         <ColorPicker
           id="colorPicker"
-          value={color}
+          value={clr}
           colors={['#cc0000', '#f0f0f0', '#2b2b2b', '#6AC8C8', '#f05050']}
           onSwitch={(switchedColor) => { useColor(switchedColor); }}
         />
@@ -61,10 +67,10 @@ export const CreateFormWithHooks = ({ onCreate } : { onCreate: (formData: Object
             { value: 'important', label: 'Important' },
             { value: 'veryImportant', label: 'Very important' },
           ]}
-          defaultValue={importancy.value}
+          defaultValue={imp.value}
           value={{
-            value: importancy.value,
-            label: importancy.label
+            value: imp.value,
+            label: imp.label
           }}
           onChange={(value) => {
             useImportancy(value);
@@ -72,9 +78,24 @@ export const CreateFormWithHooks = ({ onCreate } : { onCreate: (formData: Object
         />
       </label>
 
-      <button className="btn btn-md">
+      <button className="btn btn-md" type="submit">
         Submit
       </button>
     </form>
   );
+}
+
+CreateFormWithHooks.defaultProps = {
+  title: '',
+  text: '',
+  color: '',
+  importancy: 'default'
+};
+
+CreateFormWithHooks.propTypes = {
+  title: PropTypes.string,
+  text: PropTypes.string,
+  color: PropTypes.string,
+  importancy: PropTypes.string,
+  onSubmit: PropTypes.func.isRequired
 };

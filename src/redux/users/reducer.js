@@ -13,23 +13,6 @@ const initState = {
   error: null
 };
 
-// const userLoginRequest = (state = initState) => ({
-//   ...state,
-//   fetching: true,
-// });
-
-// const userLoginSuccess = (state, payload) => ({
-//   ...state,
-//   fetching: false,
-//   user: { ...state.user, payload }
-// });
-
-// const userLoginFail = (state, error) => ({
-//   ...state,
-//   fetching: false,
-//   error
-// });
-
 export const userReducer = (state = initState, action) => {
   switch (action.type) {
     case USER_LOGIN_REQUEST:

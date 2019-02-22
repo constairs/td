@@ -1,25 +1,17 @@
-// @flow
-
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import Select from 'react-select';
 import { ColorPicker } from '../index';
 
-type Props = {
-  onCreate: (
-    formdata: {
-      title: string,
-      text: string,
-      color: string
-  }) => any
-};
-
-export class CreateForm extends React.Component<Props, Object> {
-  state={
-    title: '',
-    text: '',
-    color: '#ffffff',
-    importancy: 'default'
+export class CreateForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: props.title,
+      text: props.text,
+      color: props.color,
+      importancy: props.importancy
+    };
   }
 
   render() {
@@ -31,18 +23,19 @@ export class CreateForm extends React.Component<Props, Object> {
         importancy
       },
       props: {
-        onCreate
+        onSubmit
       }
     } = this;
 
     return (
-      <form onSubmit={() => {
-        onCreate({
-          title,
-          text,
-          color
-        });
-      }}
+      <form
+        onSubmit={() => {
+          onSubmit({
+            title,
+            text,
+            color
+          });
+        }}
       >
         <label htmlFor="titleInput">
           <span>Title</span>
@@ -66,14 +59,17 @@ export class CreateForm extends React.Component<Props, Object> {
           />
         </label>
 
-        <span>Color</span>
-        <ColorPicker
-          value={color}
-          colors={['#cc0000', '#f0f0f0', '#2b2b2b']}
-          onSwitch={(switchedColor) => {
-            this.setState({ color: switchedColor });
-          }}
-        />
+        <label htmlFor="colorPicker">
+          <span className="descr">Color</span>
+          <ColorPicker
+            id="colorPicker"
+            value={color}
+            colors={['#cc0000', '#f0f0f0', '#2b2b2b', '#6AC8C8', '#f05050']}
+            onSwitch={(switchedColor) => {
+              this.setState({ color: switchedColor });
+            }}
+          />
+        </label>
 
         <label htmlFor="importancy">
           <Select
@@ -94,7 +90,7 @@ export class CreateForm extends React.Component<Props, Object> {
           />
         </label>
 
-        <button type="submit">
+        <button className="btn btn-md" type="submit">
           Add
         </button>
 
@@ -102,3 +98,18 @@ export class CreateForm extends React.Component<Props, Object> {
     );
   }
 }
+
+CreateForm.defaultProps = {
+  title: '',
+  text: '',
+  color: '',
+  importancy: 'default'
+};
+
+CreateForm.propTypes = {
+  title: PropTypes.string,
+  text: PropTypes.string,
+  color: PropTypes.string,
+  importancy: PropTypes.string,
+  onSubmit: PropTypes.func.isRequired
+};

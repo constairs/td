@@ -1,6 +1,5 @@
-// @flow
-
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
@@ -11,8 +10,7 @@ import {
 import {
   CardItem,
   Modal,
-  CreateFormWithHooks,
-  EditFormWithHooks
+  CreateFormWithHooks
 } from '../../components';
 
 import { createCardRequest } from '../../redux/cards/actions';
@@ -52,7 +50,6 @@ const Home = () => {
       disabled: false
     }
   ]);
-  const [filterParam, useParam] = useState('default');
   const [editModal, useEdit] = useState(false);
   const [selectedId, selectId] = useState('');
   const [createModal, useCreate] = useState(false);
@@ -90,28 +87,23 @@ const Home = () => {
     useList(destinationAnswersUpdated);
   };
 
-  const FilteredCards = () => cardList.filter(item => (item.importancy === filterParam));
   const SelectedCard = () => cardList.find(item => item.id === selectedId);
 
   return (
     <React.Fragment>
       <h1>Home</h1>
-      <div className="grid">
-        <div>
-          <button onClick={() => { useParam(''); }}>All</button>
-          <button onClick={() => { useParam('default'); }}>Default</button>
-          <button onClick={() => { useParam('important'); }}>Important</button>
-          <button onClick={() => { useParam('veryImportant'); }}>Very Important</button>
-        </div>
-        <button onClick={() => { useCreate(true); }}>
+      <button style={{ margin: '15px auto' }} onClick={() => { useCreate(true); }}>
           + Add Item
-        </button>
+      </button>
+      <div className="grid">
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="cards">
-            {(
+          <div className="column">
+            <Droppable droppableId="cards">
+              {(
               provided => (
                 <div ref={provided.innerRef}>
-                  {(filterParam ? cardList : FilteredCards).map(({
+                  {
+                    cardList.map(({
                       id,
                       title,
                       text,
@@ -153,9 +145,23 @@ const Home = () => {
                 </div>
               )
             )}
-          </Droppable>
+            </Droppable>
+          </div>
         </DragDropContext>
       </div>
+
+      <Modal
+        opened={createModal}
+        onCloseModal={() => {
+          useCreate(false);
+        }}
+      >
+        <CreateFormWithHooks
+          onSubmit={(createdCard) => {
+            useList([...cardList, { ...createdCard, id: cardList.length + 1 }]);
+          }}
+        />
+      </Modal>
 
       <Modal
         opened={editModal}
@@ -164,21 +170,8 @@ const Home = () => {
         }}
       >
         <CreateFormWithHooks
-          onCreate={(createdCard) => {
-            useList([...cardList, { ...createdCard, id: cardList.length + 1 }]);
-          }}
-        />
-      </Modal>
-
-      <Modal
-        opened={createModal}
-        onCloseModal={() => {
-          useCreate(false);
-        }}
-      >
-        <EditFormWithHooks
           {...SelectedCard}
-          onEdit={(editedCard) => {
+          onSubmit={(editedCard) => {
             useList([...cardList, { ...editedCard, id: cardList.length + 1 }]);
           }}
         />
@@ -195,3 +188,7 @@ export const HomeScreen = connect(
     cardActions: bindActionCreators({ createCardRequest }, dispatch)
   })
 )(Home);
+
+Home.propTypes = {
+  createCardRequest: PropTypes.func.isRequired
+};

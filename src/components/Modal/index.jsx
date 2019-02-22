@@ -1,6 +1,5 @@
-// @flow
-
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -22,10 +21,6 @@ export const Modal = ({
   opened,
   onCloseModal,
   children
-} : {
-  opened: boolean,
-  onCloseModal: () => any,
-  children: Object
 }) => (
   <React.Fragment>
     {
@@ -48,3 +43,9 @@ export const Modal = ({
     }
   </React.Fragment>
 );
+
+Modal.propTypes = {
+  opened: PropTypes.bool.isRequired,
+  onCloseModal: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired
+};

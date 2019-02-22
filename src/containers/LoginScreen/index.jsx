@@ -1,11 +1,8 @@
-// @flow
-
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { userLoginRequest as userLogin } from '../../redux/users/actions';
-
-// claiv luwis - otmena cheloveka
 
 const Login = ({
   userLoginRequest
@@ -56,3 +53,7 @@ export const LoginScreen = connect(
     bindActionCreators({ userLogin }, dispatch);
   }
 )(Login);
+
+Login.propTypes = {
+  userLoginRequest: PropTypes.func.isRequired
+};
